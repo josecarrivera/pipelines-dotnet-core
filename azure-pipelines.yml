@@ -34,3 +34,10 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
+    appType: 'webApp'
+    appName: 'webappjcrv'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'
