@@ -1,43 +1,41 @@
-# ASP.NET Core
 trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
   inputs:
-    command: 'test'
-    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-    publishTestResults: true
-    projects: '**/test-library/*.csproj' # update with your test project directory
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage report'
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    command: 'restore'
+    feedsToUse: 'select'
+    vstsFeed: 'my-vsts-feed' # A series of numbers and letters
+
 - task: DotNetCoreCLI@2
   inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-- task: ArchiveFiles@2
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
+
+# do this before your build tasks
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-- task: AzureWebApp@1
+    command: restore
+    projects: '**/*.csproj'
+    feedsToUse: config
+    nugetConfigPath: NuGet.config    # Relative to root of the repository
+    externalFeedCredentials: <Name of the NuGet service connection>
+# ...
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
-    azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
-    appType: 'webApp'
-    appName: 'webappjcrv'
-    package: '/home/vsts/work/1/a/33.zip'
-    deploymentMethod: 'auto'
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)' # Update this to match your need
+
