@@ -39,5 +39,5 @@ steps:
     azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
     appType: 'webApp'
     appName: 'webappjcrv'
-    package: archiveFile
+    package: '/usr/bin/zip -r /home/vsts/work/1/a/33.zip'
     deploymentMethod: 'auto'
