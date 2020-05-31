@@ -39,3 +39,11 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
+    appType: 'webApp'
+    WebAppName: 'webappjcrv'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
