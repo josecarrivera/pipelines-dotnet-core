@@ -32,17 +32,14 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: '81b8e35d-a755-4670-ac88-db686d9f159b'
+    appType: 'webApp'
+    WebAppName: 'mywebapp13238'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     command: publish
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
-    appType: 'webApp'
-    WebAppName: 'mywebapp2020'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'AzureTutorial'
-    SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
