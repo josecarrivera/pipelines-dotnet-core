@@ -41,7 +41,7 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(d4d7e7d8-3af3-4aca-bfde-222a3a7daa1b)'
     appType: 'webApp'
-    WebAppName: 'mywebapp13238'
+    WebAppName: 'mywebapp2020'
     deployToSlotOrASE: true
     ResourceGroupName: 'AzureTutorial'
     SlotName: 'production'
